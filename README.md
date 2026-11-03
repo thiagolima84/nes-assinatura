@@ -1,4 +1,5 @@
-# Nova Era Solution — imagens da assinatura de e-mail
+# Nova Era Solution — assinaturas de e-mail
 
-Logo animado e ícones usados nas assinaturas de e-mail da [Nova Era Solution](https://novaerasolution.com.br).
-Servidos via GitHub Pages: `https://thiagolima84.github.io/nes-assinatura/assets/`
+- **Página para copiar as assinaturas:** https://thiagolima84.github.io/nes-assinatura/assinaturas/
+- `assinaturas/`: assinatura de cada conta (thiago@ e contato@) e a página com botão de copiar
+- `assets/`: logo animado e ícones, servidos em `https://thiagolima84.github.io/nes-assinatura/assets/`
