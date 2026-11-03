@@ -1,5 +1,13 @@
 # Nova Era Solution — assinaturas de e-mail
 
-- **Página para copiar as assinaturas:** https://thiagolima84.github.io/nes-assinatura/assinaturas/
-- `assinaturas/`: assinatura de cada conta (thiago@ e contato@) e a página com botão de copiar
-- `assets/`: logo animado e ícones, servidos em `https://thiagolima84.github.io/nes-assinatura/assets/`
+- **Assinaturas prontas (copiar e colar):** https://thiagolima84.github.io/nes-assinatura/assinaturas/
+- **Gerador de novas assinaturas:** https://thiagolima84.github.io/nes-assinatura/gerador/
+
+## Pastas
+- `assinaturas/`: assinaturas publicadas (imagens via GitHub Pages) e página com botão de copiar
+- `gerador/`: página para criar assinaturas novas no mesmo padrão
+- `assets/`: logo animado e ícones
+- `fonte/`: modelos e scripts que geram tudo acima
+- `assinatura-*.html` (raiz): mesmas assinaturas com imagens locais, para o Outlook clássico
+
+Instruções de instalação e manutenção: [COMO-INSTALAR.md](COMO-INSTALAR.md)

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Gerador de Assinaturas</title>
+<style>
+  :root { color-scheme: light; --navy:#0B2545; --blue:#1E6FB8; --bg:#F3F6FA; --line:#DCE8F5; --text:#434343; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font-family: "Segoe UI", Arial, Helvetica, sans-serif; line-height:1.5; }
+  header { background:var(--navy); color:#fff; padding:28px 16px; }
+  header .in, main { max-width:760px; margin:0 auto; }
+  header h1 { margin:0; font-size:22px; }
+  header p { margin:4px 0 0; color:#B9CDE6; font-size:14px; }
+  header a { color:#fff; }
+  main { padding:24px 16px 48px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:12px; margin-bottom:24px; overflow:hidden; }
+  .card h2 { margin:0; padding:14px 20px; font-size:15px; color:var(--navy); border-bottom:1px solid var(--line); }
+  form { padding:20px; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  label { display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:600; color:var(--navy); }
+  label small { font-weight:400; color:#6b6b6b; }
+  input { font:inherit; font-size:15px; padding:10px 12px; border:1px solid #C7D6E8; border-radius:8px; color:#222; background:#fff; width:100%; }
+  input:focus { outline:2px solid var(--blue); outline-offset:1px; border-color:var(--blue); }
+  .full { grid-column:1 / -1; }
+  .presets { grid-column:1 / -1; display:flex; gap:8px; flex-wrap:wrap; align-items:center; font-size:13px; }
+  .presets button { background:#E6F0FA; color:var(--blue); padding:6px 12px; font-size:13px; }
+  .presets button:hover { background:#D5E6F7; }
+  .sig { padding:20px; overflow-x:auto; background:#fff; }
+  .actions { padding:14px 20px; border-top:1px solid var(--line); display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+  button { background:var(--blue); color:#fff; border:0; border-radius:8px; padding:10px 18px; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; }
+  button:hover { background:#185C99; }
+  button.sec { background:#fff; color:var(--blue); border:1px solid var(--blue); }
+  button.sec:hover { background:#F0F6FC; }
+  button.ok { background:#1E8E5A; color:#fff; border-color:#1E8E5A; }
+  .howto { background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px 20px; font-size:14px; }
+  .howto h3 { margin:0 0 8px; font-size:15px; color:var(--navy); }
+  .howto ol { margin:0 0 12px; padding-left:20px; }
+  .howto p { margin:0; color:#6b6b6b; font-size:13px; }
+  @media (max-width: 560px) { form { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header><div class="in">
+  <h1>Gerador de assinaturas · Nova Era Solution</h1>
+  <p>Preencha os dados, confira a prévia e copie. O visual é sempre o padrão da empresa. <a href="../assinaturas/">Ver assinaturas prontas</a></p>
+</div></header>
+<main>
+
+  <section class="card">
+    <h2>Dados</h2>
+    <form id="f" autocomplete="off" onsubmit="return false">
+      <div class="presets">Começar de:
+        <button type="button" onclick="preset('pessoa')">Pessoa</button>
+        <button type="button" onclick="preset('setor')">Setor / atendimento</button>
+      </div>
+      <label>Nome <small>Aparece em destaque</small>
+        <input id="nome" placeholder="Ex.: Maria Souza">
+      </label>
+      <label>Cargo ou subtítulo <small>Linha azul abaixo do nome</small>
+        <input id="cargo" placeholder="Ex.: Network Engineer">
+      </label>
+      <label>E-mail
+        <input id="email" type="email" placeholder="nome@novaerasolution.com.br">
+      </label>
+      <label>Telefone / WhatsApp <small>Com DDD; o link do WhatsApp é criado sozinho</small>
+        <input id="telefone" type="tel" placeholder="(21) 99999-9999">
+      </label>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2>Prévia</h2>
+    <div class="sig" id="sig"></div>
+    <div class="actions">
+      <button type="button" id="copiar" onclick="copiar(this)">Copiar assinatura</button>
+      <button type="button" class="sec" onclick="baixar()">Baixar arquivo .html</button>
+    </div>
+  </section>
+
+  <section class="howto">
+    <h3>Como instalar no Outlook</h3>
+    <ol>
+      <li>Clique em <strong>Copiar assinatura</strong>.</li>
+      <li>No Outlook: <strong>Configurações › Contas › Assinaturas › Nova assinatura</strong>.</li>
+      <li>Cole (Ctrl+V), dê um nome e salve.</li>
+      <li>Em “Escolher assinaturas padrão”, selecione a assinatura para novas mensagens e para respostas.</li>
+    </ol>
+    <p>O arquivo .html baixado serve para guardar a assinatura ou instalar no Outlook clássico (pasta %APPDATA%\Microsoft\Signatures, renomeando para .htm). Gmail: Configurações › Geral › Assinatura.</p>
+  </section>
+
+</main>
+<script>
+var MODELO = {{MODELO_JSON}};
+var campos = ['nome', 'cargo', 'email', 'telefone'];
+
+var PRESETS = {
+  pessoa: { nome: '', cargo: 'IT Specialist', email: '@novaerasolution.com.br', telefone: '' },
+  setor:  { nome: 'Nova Era Solution', cargo: 'Atendimento · todos os dias, das 8h às 18h', email: 'contato@novaerasolution.com.br', telefone: '(21) 99897-3392' }
+};
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+  });
+}
+
+function fone(v) {
+  var d = v.replace(/\D/g, '');
+  if (d.length > 11 && d.indexOf('55') === 0) d = d.slice(2);
+  var txt = v.trim();
+  if (d.length === 11) txt = '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+  else if (d.length === 10) txt = '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+  return { texto: txt, whatsapp: d ? '55' + d : '' };
+}
+
+function valor(id) { return document.getElementById(id).value.trim(); }
+
+function montar() {
+  var f = fone(valor('telefone') || '(21) 99999-9999');
+  var dados = {
+    NOME: esc(valor('nome') || 'Seu Nome'),
+    CARGO: esc(valor('cargo') || 'Cargo'),
+    EMAIL: esc(valor('email') || 'nome@novaerasolution.com.br'),
+    TELEFONE: esc(f.texto),
+    WHATSAPP: f.whatsapp
+  };
+  var html = MODELO;
+  for (var k in dados) html = html.split('{{' + k + '}}').join(dados[k]);
+  return html;
+}
+
+function atualizar() {
+  document.getElementById('sig').innerHTML = montar();
+  try { localStorage.setItem('nes-gerador', JSON.stringify(campos.map(valor))); } catch (e) {}
+}
+
+function preset(nome) {
+  var p = PRESETS[nome];
+  campos.forEach(function (id) { document.getElementById(id).value = p[id]; });
+  atualizar();
+  document.getElementById(nome === 'pessoa' ? 'nome' : 'cargo').focus();
+}
+
+async function copiar(btn) {
+  var el = document.getElementById('sig');
+  var html = el.innerHTML.trim();
+  var ok = false;
+  try {
+    if (navigator.clipboard && window.ClipboardItem) {
+      await navigator.clipboard.write([new ClipboardItem({
+        'text/html': new Blob([html], { type: 'text/html' }),
+        'text/plain': new Blob([el.innerText], { type: 'text/plain' })
+      })]);
+      ok = true;
+    }
+  } catch (e) {}
+  if (!ok) {
+    var r = document.createRange();
+    r.selectNodeContents(el);
+    var s = window.getSelection();
+    s.removeAllRanges(); s.addRange(r);
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    s.removeAllRanges();
+  }
+  btn.textContent = ok ? 'Copiada! Agora cole no Outlook' : 'Não deu: selecione e copie à mão';
+  btn.classList.toggle('ok', ok);
+  setTimeout(function () { btn.textContent = 'Copiar assinatura'; btn.classList.remove('ok'); }, 3500);
+}
+
+function baixar() {
+  var nome = valor('nome') || 'assinatura';
+  var doc = '<!DOCTYPE html>\n<html lang="pt-BR">\n<head>\n<meta charset="utf-8">\n<title>Assinatura - ' + esc(nome) +
+            ' - Nova Era Solution</title>\n</head>\n<body style="margin:0;padding:20px;background:#ffffff;">\n' + montar() + '\n</body>\n</html>\n';
+  var slug = nome.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'assinatura';
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([doc], { type: 'text/html' }));
+  a.download = 'assinatura-' + slug + '.html';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+}
+
+campos.forEach(function (id) { document.getElementById(id).addEventListener('input', atualizar); });
+try {
+  var salvo = JSON.parse(localStorage.getItem('nes-gerador') || 'null');
+  if (salvo) campos.forEach(function (id, i) { document.getElementById(id).value = salvo[i] || ''; });
+} catch (e) {}
+atualizar();
+</script>
+</body>
+</html>
