@@ -1,7 +1,7 @@
 # Gera todas as assinaturas a partir de modelo.html.
 #   assinatura-*.html (raiz)  -> imagens em assets/ (previa local e Outlook classico)
 #   assinaturas/              -> imagens no GitHub Pages + pagina para copiar (index.html)
-#   gerador/index.html        -> pagina para criar novas assinaturas no mesmo padrao
+#   ../website/admin/_apps/assinaturas.html -> gerador (so na area restrita do site)
 # Para adicionar uma conta fixa, inclua uma linha em $contas e rode o script.
 param([string]$BaseUrl = 'https://thiagolima84.github.io/nes-assinatura/assets/')
 
@@ -51,4 +51,5 @@ Salvar (Join-Path $pub 'index.html') $index
 # Gerador: o modelo vai embutido como texto JSON, com os campos ainda em {{...}}
 $json = ConvertTo-Json (Tabela $online) -Compress
 $gerador = (Get-Content -Raw -Encoding UTF8 "$PSScriptRoot\modelo-gerador.html").Replace('{{MODELO_JSON}}', $json)
-Salvar (Join-Path $root 'gerador\index.html') $gerador
+# O gerador fica só na área restrita do site (novaerasolution.com.br/admin), não no GitHub Pages
+Salvar (Join-Path $root '..\website\admin\_apps\assinaturas.html') $gerador

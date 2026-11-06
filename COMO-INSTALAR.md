@@ -2,7 +2,7 @@
 
 ## Links
 - **Assinaturas prontas:** https://thiagolima84.github.io/nes-assinatura/assinaturas/
-- **Gerador (novas assinaturas no mesmo padrão):** https://thiagolima84.github.io/nes-assinatura/gerador/
+- **Gerador (novas assinaturas no mesmo padrão):** https://novaerasolution.com.br/admin/apps/assinaturas/ (área restrita)
 - **Repositório:** https://github.com/thiagolima84/nes-assinatura (esta pasta é o repositório)
 
 ## Instalar no Outlook (novo, web e Microsoft 365)
